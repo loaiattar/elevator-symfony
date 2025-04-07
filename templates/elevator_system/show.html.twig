@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Elevator System #{{ elevator_system.id }}{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Elevator System #{{ elevator_system.id }}</h1>
+        <div>
+            <a href="{{ path('app_elevator_system_statistics', {'id': elevator_system.id}) }}" class="btn btn-info">View Statistics</a>
+            <a href="{{ path('app_elevator_system_index') }}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">System Information</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                <span class="badge {% if system_status.status == 'operational' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ system_status.status|capitalize }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Number of Elevators</th>
+                            <td>{{ system_status.elevators }}</td>
+                        </tr>
+                        <tr>
+                            <th>Floor Range</th>
+                            <td>{{ system_status.min_floor }} to {{ system_status.max_floor }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex mt-3">
+                        <form method="post" action="{{ path('app_elevator_system_emergency_stop', {'id': elevator_system.id}) }}" class="me-2">
+                            <button type="submit" class="btn btn-danger" {% if system_status.status == 'emergency' %}disabled{% endif %}>
+                                Emergency Stop
+                            </button>
+                        </form>
+                        <form method="post" action="{{ path('app_elevator_system_resume', {'id': elevator_system.id}) }}">
+                            <button type="submit" class="btn btn-success" {% if system_status.status == 'operational' %}disabled{% endif %}>
+                                Resume Operation
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Call Elevator</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ path('app_elevator_system_call', {'id': elevator_system.id}) }}">
+                        <div class="mb-3">
+                            <label for="floor" class="form-label">Floor</label>
+                            <input type="number" class="form-control" id="floor" name="floor"
+                                   min="{{ system_status.min_floor }}" max="{{ system_status.max_floor }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="direction" class="form-label">Direction</label>
+                            <select class="form-select" id="direction" name="direction">
+                                <option value="up">Up</option>
+                                <option value="down">Down</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" {% if system_status.status == 'emergency' %}disabled{% endif %}>
+                            Call Elevator
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Elevators</h2>
+    <div class="row">
+        {% for elevator in elevator_statuses %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Elevator #{{ elevator.id }}</h5>
+                        <span class="badge {% if elevator.moving %}bg-warning{% elseif elevator.door_open %}bg-info{% else %}bg-success{% endif %}">
+                        {% if elevator.moving %}Moving {{ elevator.direction }}{% elseif elevator.door_open %}Door Open{% else %}Idle{% endif %}
+                    </span>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Current Floor:</strong> {{ elevator.current_floor }}</p>
+                        <p><strong>Queue:</strong>
+                            {% if elevator.queue is empty %}
+                                <em>Empty</em>
+                            {% else %}
+                                {{ elevator.queue|join(', ') }}
+                            {% endif %}
+                        </p>
+                        <p><strong>Next Maintenance:</strong> {{ elevator.next_maintenance }}</p>
+
+                        <div class="d-flex flex-wrap mt-3">
+                            <form method="post" action="{{ path('app_elevator_move_up', {'id': elevator.id}) }}" class="me-2 mb-2">
+                                <button type="submit" class="btn btn-sm btn-primary"
+                                        {% if elevator.moving or system_status.status == 'emergency' %}disabled{% endif %}>
+                                    Move Up
+                                </button>
+                            </form>
+                            <form method="post" action="{{ path('app_elevator_move_down', {'id': elevator.id}) }}" class="me-2 mb-2">
+                                <button type="submit" class="btn btn-sm btn-primary"
+                                        {% if elevator.moving or system_status.status == 'emergency' %}disabled{% endif %}>
+                                    Move Down
+                                </button>
+                            </form>
+                            <form method="post" action="{{ path('app_elevator_open_door', {'id': elevator.id}) }}" class="me-2 mb-2">
+                                <button type="submit" class="btn btn-sm btn-success"
+                                        {% if elevator.door_open or elevator.moving or system_status.status == 'emergency' %}disabled{% endif %}>
+                                    Open Door
+                                </button>
+                            </form>
+                            <form method="post" action="{{ path('app_elevator_close_door', {'id': elevator.id}) }}" class="me-2 mb-2">
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                        {% if not elevator.door_open or elevator.moving or system_status.status == 'emergency' %}disabled{% endif %}>
+                                    Close Door
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        // Auto-refresh the page every 5 seconds to update elevator statuses
+        setTimeout(function() {
+            location.reload();
+        }, 5000);
+    </script>
+{% endblock %}

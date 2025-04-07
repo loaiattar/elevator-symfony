@@ -1,0 +1,175 @@
+
+/* Elevator visualization */
+.elevator-visualization {
+    position: relative;
+    height: 300px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+    overflow: hidden;
+}
+
+.elevator-shaft {
+    position: relative;
+    width: 80px;
+    height: 100%;
+    margin: 0 auto;
+    background-color: #e9ecef;
+    border-left: 2px solid #adb5bd;
+    border-right: 2px solid #adb5bd;
+}
+
+.elevator-car {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 80px;
+    background-color: #6c757d;
+    border: 2px solid #495057;
+    transition: bottom 1s ease-in-out;
+}
+
+.elevator-door {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50%;
+    background-color: #495057;
+    transition: transform 0.5s ease-in-out;
+}
+
+.elevator-door-left {
+    left: 0;
+    transform-origin: left;
+}
+
+.elevator-door-right {
+    right: 0;
+    transform-origin: right;
+}
+
+.elevator-door-open .elevator-door-left {
+    transform: translateX(-100%);
+}
+
+.elevator-door-open .elevator-door-right {
+    transform: translateX(100%);
+}
+
+.floor-indicator {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background-color: #212529;
+    color: #20c997;
+    font-family: 'Digital', monospace;
+    font-size: 24px;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* Floor markers */
+.floor-markers {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+}
+
+.floor-marker {
+    display: flex;
+    align-items: center;
+}
+
+.floor-marker-line {
+    width: 20px;
+    height: 2px;
+    background-color: #adb5bd;
+    margin-right: 5px;
+}
+
+.floor-marker-label {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* Control panel */
+.elevator-control-panel {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.floor-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.floor-button {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.floor-button:hover {
+    background-color: #dee2e6;
+}
+
+.floor-button.active {
+    background-color: #0d6efd;
+    color: white;
+}
+
+/* Status indicators */
+.status-indicators {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.status-indicator {
+    text-align: center;
+    padding: 10px;
+    border-radius: 4px;
+    flex: 1;
+    margin: 0 5px;
+}
+
+.status-indicator-label {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.status-indicator-value {
+    font-weight: bold;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .elevator-visualization {
+        height: 200px;
+    }
+
+    .elevator-car {
+        width: 50px;
+        height: 60px;
+    }
+
+    .floor-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

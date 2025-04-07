@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistics - Elevator System #{{ elevator_system.id }}{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Statistics - Elevator System #{{ elevator_system.id }}</h1>
+        <div>
+            <a href="{{ path('app_elevator_system_show', {'id': elevator_system.id}) }}" class="btn btn-primary">View System</a>
+            <a href="{{ path('app_elevator_system_index') }}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">Call Statistics</h5>
+                </div>
+                <div class="card-body">
+                    {% if statistics is iterable and statistics.total_calls is defined %}
+                        <p><strong>Total Calls:</strong> {{ statistics.total_calls }}</p>
+
+                        <h6>Most Requested Floors:</h6>
+                        {% if statistics.most_requested_floors is empty %}
+                            <p><em>No data available</em></p>
+                        {% else %}
+                            <table class="table table-sm">
+                                <thead>
+                                <tr>
+                                    <th>Floor</th>
+                                    <th>Calls</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for floor, count in statistics.most_requested_floors %}
+                                    <tr>
+                                        <td>{{ floor }}</td>
+                                        <td>{{ count }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endif %}
+
+                        <h6>Direction Statistics:</h6>
+                        {% if statistics.direction_statistics is empty %}
+                            <p><em>No data available</em></p>
+                        {% else %}
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h3>{{ statistics.direction_statistics.up }}</h3>
+                                            <p class="mb-0">Up Calls</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body text-center">
+                                            <h3>{{ statistics.direction_statistics.down }}</h3>
+                                            <p class="mb-0">Down Calls</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="alert alert-info">
+                            {{ statistics[0] ?? 'No statistics available yet.' }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">System Information</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                <span class="badge {% if elevator_system.systemStatus == 'operational' %}bg-success{% else %}bg-danger{% endif %}">
+                                    {{ elevator_system.systemStatus|capitalize }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Number of Elevators</th>
+                            <td>{{ elevator_system.elevators|length }}</td>
+                        </tr>
+                        <tr>
+                            <th>Floor Range</th>
+                            <td>{{ elevator_system.minFloor }} to {{ elevator_system.maxFloor }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

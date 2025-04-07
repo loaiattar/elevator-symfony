@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome to Elevator System{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome to the Elevator System</h1>
+        <p class="lead">A Symfony implementation of an elevator control system with API and UI interfaces.</p>
+        <hr class="my-4">
+        <p>This application allows you to create and manage elevator systems, control individual elevators, and view statistics.</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <a href="{{ path('app_elevator_system_index')  }}" class="btn btn-primary me-md-2">View Elevator Systems</a>
+            <a href="{{ path('app_elevator_system_new') }}" class="btn btn-success">Create New System</a>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">API Access</h5>
+                    <p class="card-text">The system provides RESTful API endpoints for programmatic access.</p>
+                    <h6>Main API Endpoints:</h6>
+                    <ul>
+                        <li><code>/api/elevator-system/create</code> - Create a new elevator system</li>
+                        <li><code>/api/elevator-system/{id}/status</code> - Get system status</li>
+                        <li><code>/api/elevator-system/{id}/call</code> - Call an elevator</li>
+                        <li><code>/api/elevator/{id}/move-up</code> - Move elevator up</li>
+                        <li><code>/api/elevator/{id}/move-down</code> - Move elevator down</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Features</h5>
+                    <ul>
+                        <li>Create elevator systems with custom parameters</li>
+                        <li>Call elevators to specific floors</li>
+                        <li>Control elevator movement and door operations</li>
+                        <li>View real-time elevator status</li>
+                        <li>Emergency stop and resume functionality</li>
+                        <li>Usage statistics and analytics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Getting Started</h5>
+                    <p>To get started, create a new elevator system with your desired configuration:</p>
+                    <ol>
+                        <li>Click on "Create New System"</li>
+                        <li>Specify the number of elevators</li>
+                        <li>Set the minimum and maximum floors</li>
+                        <li>Start controlling your elevators!</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

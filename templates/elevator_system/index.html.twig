@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Elevator Systems{% endblock %}
+
+{% block body %}
+    {# Debug output inside a block - commented out to prevent memory issues #}
+    {# {{ dump() }} #}
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Elevator Systems</h1>
+        <a href="{{ path('app_elevator_system_new') }}" class="btn btn-primary">Create New System</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Elevators</th>
+                <th>Floor Range</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if elevator_systems is defined and elevator_systems|length > 0 %}
+                {% for system in elevator_systems %}
+                    <tr>
+                        <td>{{ system.id }}</td>
+                        <td>
+                            {% if system.systemStatus == 'emergency_stopped' %}
+                                <span class="badge bg-danger">Emergency Stopped</span>
+                            {% else %}
+                                <span class="badge bg-success">Operational</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ system.elevators|length }}</td>
+                        <td>{{ system.minFloor }} to {{ system.maxFloor }}</td>
+                        <td>
+                            <a href="{{ path('app_elevator_system_show', {'id': system.id}) }}" class="btn btn-sm btn-info">View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">
+                        <div class="alert alert-info">
+                            No elevator systems found.
+                            Create your first elevator system to get started.
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
