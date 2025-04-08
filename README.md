@@ -153,13 +153,7 @@ This ensures efficient distribution of elevator calls throughout the building.
 - **API Support**: REST API endpoints for potential external integration
 - **Real-time Updates**: Page refresh every 5 seconds provides near real-time status
 
-## Future Enhancements
 
-- WebSocket integration for true real-time updates
-- Physics-based movement simulation
-- User authentication and role-based permissions
-- Predictive algorithms for elevator dispatching
-- Mobile application integration
 
 ## Testing
 
