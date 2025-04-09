@@ -88,6 +88,24 @@ elevator-symfony/
    * Movement control
    * Door operations
    * Queue management
+3. **ElevatorControlService**:
+* The ElevatorControlService is responsible for controlling
+  the elevator operations. It interacts with the hardware layer
+  through the adapter pattern, which makes it flexible enough
+  to work with different types of elevator hardware systems.
+* Control Movement
+* Door Operations
+* Simulation of Movement
+* Integration with Multiple Hardware Types
+  *Example:*
+* // Assuming BasicHardwareAdapter or AdvancedHardwareAdapter has been initialized
+  $elevatorService = new ElevatorControlService($hardwareAdapter);
+
+// Move the elevator to floor 5
+$elevatorService->moveToFloor(5);
+* This service abstracts the complexity of controlling an elevator by interacting
+  with hardware through a unified interface, making it easy to manage elevator
+  operations regardless of the
 
 ## Installation & Setup
 
